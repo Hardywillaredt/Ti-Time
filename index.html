@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta
+      name="description"
+      content="Twilight Imperium IV scheduling poll for August 29-30, 2026."
+    >
+    <title>TI4 Time Poll</title>
+    <link rel="preload" as="image" href="assets/galactic-table.png">
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <main class="shell">
+      <section class="brief" aria-labelledby="event-title">
+        <p class="kicker">Galactic Council Docket</p>
+        <h1 id="event-title">
+          <span>Twilight</span>
+          <span>Imperium IV</span>
+        </h1>
+        <p class="lede">Vote for the start times that work on August 29-30, 2026.</p>
+
+        <dl class="event-facts" aria-label="Event details">
+          <div>
+            <dt>Round</dt>
+            <dd>Weekend conquest</dd>
+          </div>
+          <div>
+            <dt>Window</dt>
+            <dd>August 29-30, 2026</dd>
+          </div>
+          <div>
+            <dt>Clock</dt>
+            <dd>Pacific time</dd>
+          </div>
+        </dl>
+      </section>
+
+      <section class="poll-panel" aria-labelledby="poll-title">
+        <form id="availability-form" class="poll-form">
+          <div class="form-heading">
+            <p class="overline">Speaker Order</p>
+            <h2 id="poll-title">Declare Availability</h2>
+          </div>
+
+          <div class="field-grid">
+            <label>
+              <span>Name</span>
+              <input id="player-name" name="name" autocomplete="name" required>
+            </label>
+
+            <label>
+              <span>Contact</span>
+              <input
+                id="player-contact"
+                name="contact"
+                autocomplete="email"
+                placeholder="Email, Discord, or phone"
+                required
+              >
+            </label>
+          </div>
+
+          <fieldset>
+            <legend>Start times that work</legend>
+            <div class="slot-grid">
+              <label class="slot">
+                <input
+                  type="checkbox"
+                  name="availability"
+                  value="Saturday, August 29, 2026 at 7:00 AM Pacific"
+                >
+                <span>
+                  <strong>Saturday</strong>
+                  <small>August 29, 2026</small>
+                  <em>7:00 AM Pacific</em>
+                </span>
+              </label>
+
+              <label class="slot">
+                <input
+                  type="checkbox"
+                  name="availability"
+                  value="Saturday, August 29, 2026 at 1:00 PM Pacific"
+                >
+                <span>
+                  <strong>Saturday</strong>
+                  <small>August 29, 2026</small>
+                  <em>1:00 PM Pacific</em>
+                </span>
+              </label>
+
+              <label class="slot">
+                <input
+                  type="checkbox"
+                  name="availability"
+                  value="Sunday, August 30, 2026 at 7:00 AM Pacific"
+                >
+                <span>
+                  <strong>Sunday</strong>
+                  <small>August 30, 2026</small>
+                  <em>7:00 AM Pacific</em>
+                </span>
+              </label>
+
+              <label class="slot">
+                <input
+                  type="checkbox"
+                  name="availability"
+                  value="Sunday, August 30, 2026 at 1:00 PM Pacific"
+                >
+                <span>
+                  <strong>Sunday</strong>
+                  <small>August 30, 2026</small>
+                  <em>1:00 PM Pacific</em>
+                </span>
+              </label>
+            </div>
+          </fieldset>
+
+          <div class="field-grid">
+            <label>
+              <span>Faction leaning</span>
+              <input id="faction" name="faction" placeholder="Optional">
+            </label>
+
+            <label>
+              <span>Table status</span>
+              <select id="table-status" name="tableStatus">
+                <option value="Ready to play">Ready to play</option>
+                <option value="Rules refresher helpful">Rules refresher helpful</option>
+                <option value="Can teach newer players">Can teach newer players</option>
+              </select>
+            </label>
+          </div>
+
+          <label>
+            <span>Agenda notes</span>
+            <textarea
+              id="notes"
+              name="notes"
+              rows="4"
+              placeholder="Optional constraints, food plans, hard stops, or diplomacy warnings"
+            ></textarea>
+          </label>
+
+          <input type="hidden" name="_subject" value="TI4 availability poll response">
+
+          <div class="actions">
+            <button id="submit-button" class="submit-button" type="submit">
+              <span id="submit-icon" aria-hidden="true">></span>
+              <span id="submit-label">Send response</span>
+            </button>
+            <p id="form-status" class="status" role="status" aria-live="polite"></p>
+          </div>
+        </form>
+      </section>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>
