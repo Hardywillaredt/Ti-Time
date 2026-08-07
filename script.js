@@ -29,21 +29,15 @@ function selectedSlots() {
 function responseSummary() {
   const data = new FormData(form);
   const slots = selectedSlots();
-  const notes = data.get("notes")?.trim() || "None";
-  const faction = data.get("faction")?.trim() || "No preference";
 
   return [
     "TI4 availability poll response",
     "",
     `Name: ${data.get("name")}`,
     `Contact: ${data.get("contact")}`,
-    `Faction leaning: ${faction}`,
-    `Table status: ${data.get("tableStatus")}`,
     "",
     "Available start times:",
     ...slots.map((slot) => `- ${slot}`),
-    "",
-    `Agenda notes: ${notes}`,
   ].join("\n");
 }
 

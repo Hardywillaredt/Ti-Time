@@ -40,10 +40,10 @@ textarea {
 
 .shell {
   display: grid;
-  grid-template-columns: minmax(260px, 0.84fr) minmax(320px, 560px);
-  gap: clamp(24px, 6vw, 82px);
+  grid-template-columns: minmax(520px, 1fr) minmax(320px, 480px);
+  gap: clamp(64px, 8vw, 128px);
   align-items: center;
-  width: min(1180px, calc(100% - 32px));
+  width: min(1320px, calc(100% - 48px));
   min-height: 100vh;
   margin: 0 auto;
   padding: clamp(28px, 5vw, 64px) 0;
@@ -52,7 +52,7 @@ textarea {
 .brief {
   width: 100%;
   min-width: 0;
-  max-width: 620px;
+  max-width: 720px;
   text-shadow: 0 2px 28px rgba(0, 0, 0, 0.72);
 }
 
@@ -86,7 +86,7 @@ h1 span {
 
 .lede {
   width: 100%;
-  max-width: 560px;
+  max-width: 600px;
   margin: 24px 0 0;
   color: var(--muted);
   font-size: 1.16rem;
@@ -94,40 +94,11 @@ h1 span {
   overflow-wrap: break-word;
 }
 
-.event-facts {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 10px;
-  margin: 34px 0 0;
-}
-
-.event-facts div {
-  min-width: 0;
-  padding: 14px 16px;
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  background: rgba(6, 12, 19, 0.52);
-  backdrop-filter: blur(12px);
-}
-
-.event-facts dt {
-  color: var(--dim);
-  font-size: 0.72rem;
-  font-weight: 800;
-  text-transform: uppercase;
-}
-
-.event-facts dd {
-  margin: 6px 0 0;
-  color: var(--ink);
-  font-size: 0.96rem;
-}
-
 .poll-panel {
   justify-self: end;
   width: 100%;
   min-width: 0;
-  max-width: 560px;
+  max-width: 480px;
   border: 1px solid var(--line);
   border-radius: 8px;
   background:
@@ -139,12 +110,13 @@ h1 span {
 
 .poll-form {
   display: grid;
-  gap: 22px;
-  padding: clamp(22px, 4vw, 34px);
+  gap: 24px;
+  padding: 32px;
 }
 
 .form-heading h2 {
-  font-size: 2rem;
+  font-size: 1.72rem;
+  line-height: 1.12;
 }
 
 .field-grid {
@@ -320,9 +292,18 @@ textarea:focus {
   color: #ffb4ad;
 }
 
-@media (max-width: 1100px) {
+@media (max-width: 1200px) {
+  .shell {
+    grid-template-columns: minmax(430px, 1fr) minmax(300px, 430px);
+    gap: 56px;
+  }
+
   h1 {
-    font-size: 5.8rem;
+    font-size: 5.6rem;
+  }
+
+  .poll-panel {
+    max-width: 430px;
   }
 }
 
@@ -350,10 +331,6 @@ textarea:focus {
 
   .lede {
     margin-top: 16px;
-  }
-
-  .event-facts {
-    grid-template-columns: 1fr;
   }
 }
 

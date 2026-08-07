@@ -2,10 +2,10 @@
 
 Static GitHub Pages scheduling poll for a Twilight Imperium IV game on:
 
-- Saturday, August 29, 2026 at 7:00 AM Pacific
-- Saturday, August 29, 2026 at 1:00 PM Pacific
-- Sunday, August 30, 2026 at 7:00 AM Pacific
-- Sunday, August 30, 2026 at 1:00 PM Pacific
+- Saturday, August 29, 2026 at 7:00 AM PST
+- Saturday, August 29, 2026 at 1:00 PM PST
+- Sunday, August 30, 2026 at 7:00 AM PST
+- Sunday, August 30, 2026 at 1:00 PM PST
 
 ## Publish on GitHub Pages
 
