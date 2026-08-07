@@ -34,7 +34,6 @@ function responseSummary() {
     "TI4 availability poll response",
     "",
     `Name: ${data.get("name")}`,
-    `Contact: ${data.get("contact")}`,
     "",
     "Available start times:",
     ...slots.map((slot) => `- ${slot}`),

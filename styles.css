@@ -184,6 +184,10 @@ h1 span {
   gap: 14px;
 }
 
+.single-field {
+  grid-template-columns: 1fr;
+}
+
 label,
 fieldset {
   display: grid;
