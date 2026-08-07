@@ -110,26 +110,72 @@ h1 span {
 
 .poll-form {
   display: grid;
-  gap: 24px;
-  padding: 32px;
+  gap: 18px;
+  padding: 24px;
 }
 
-.form-heading h2 {
+.recruitment-poster {
+  width: min(100%, 340px);
+  margin: 0 auto 2px;
+  overflow: hidden;
+  border-radius: 6px;
+  border: 6px solid #c84b4d;
+  background: #ead9b8;
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.38);
+}
+
+.poster-art {
+  height: 210px;
+  margin: 12px 12px 0;
+  overflow: hidden;
+  border: 5px solid #1c273f;
+  background: #ead9b8;
+}
+
+.poster-figure {
+  display: block;
+  width: 100%;
+  height: 310px;
+  object-fit: cover;
+  object-position: 50% 5%;
+}
+
+.poster-copy {
   display: grid;
-  gap: 7px;
-  line-height: 1.08;
+  gap: 1px;
+  margin: 0;
+  padding: 10px 18px 14px;
+  text-align: center;
+  text-transform: uppercase;
+  text-shadow: none;
 }
 
-.council-call {
-  color: var(--red);
-  font-size: 2.08rem;
+.poster-council,
+.poster-declare {
+  color: #1c273f;
+  font-family: "Arial Black", Impact, Haettenschweiler, sans-serif;
   font-weight: 950;
+  line-height: 0.96;
 }
 
-.declaration-line {
-  color: var(--ink);
-  font-size: 1.45rem;
-  font-weight: 850;
+.poster-council {
+  font-size: 0.98rem;
+}
+
+.poster-you {
+  color: #c8484d;
+  font-family: "Arial Black", Impact, Haettenschweiler, sans-serif;
+  font-size: 3.22rem;
+  font-weight: 950;
+  line-height: 0.86;
+  text-shadow:
+    2px 0 #1c273f,
+    0 2px #1c273f,
+    2px 2px #1c273f;
+}
+
+.poster-declare {
+  font-size: 1.03rem;
 }
 
 .field-grid {
@@ -205,7 +251,7 @@ textarea:focus {
 
 .slot {
   position: relative;
-  min-height: 112px;
+  min-height: 104px;
   padding: 15px;
   border: 1px solid rgba(255, 255, 255, 0.13);
   border-radius: 8px;
@@ -366,16 +412,24 @@ textarea:focus {
     font-size: 1rem;
   }
 
-  .form-heading h2 {
-    gap: 6px;
+  .recruitment-poster {
+    width: min(100%, 320px);
   }
 
-  .council-call {
-    font-size: 1.82rem;
+  .poster-art {
+    height: 205px;
   }
 
-  .declaration-line {
-    font-size: 1.28rem;
+  .poster-council {
+    font-size: 0.96rem;
+  }
+
+  .poster-you {
+    font-size: 3.1rem;
+  }
+
+  .poster-declare {
+    font-size: 1rem;
   }
 
   .field-grid,

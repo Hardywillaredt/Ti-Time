@@ -9,6 +9,7 @@
     >
     <title>TI4 Time Poll</title>
     <link rel="preload" as="image" href="assets/galactic-table.png">
+    <link rel="preload" as="image" href="assets/council-wants-you.webp">
     <link rel="stylesheet" href="styles.css">
   </head>
   <body>
@@ -25,10 +26,20 @@
       <section class="poll-panel" aria-labelledby="poll-title">
         <form id="availability-form" class="poll-form">
           <div class="form-heading">
-            <h2 id="poll-title">
-              <span class="council-call">The Galactic Council Demands!</span>
-              <span class="declaration-line">Declare your Availability</span>
-            </h2>
+            <div class="recruitment-poster">
+              <div class="poster-art" aria-hidden="true">
+                <img
+                  class="poster-figure"
+                  src="assets/council-wants-you.webp"
+                  alt=""
+                >
+              </div>
+              <h2 id="poll-title" class="poster-copy">
+                <span class="poster-council">The Galactic Council Wants</span>
+                <span class="poster-you">YOU</span>
+                <span class="poster-declare">to Declare Your Availability</span>
+              </h2>
+            </div>
           </div>
 
           <div class="field-grid">
