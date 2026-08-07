@@ -45,3 +45,17 @@ window.TI_TIME_CONFIG = {
 ```
 
 The admin schedule overview lives at `responses.html`. It is not linked from the public poll, but GitHub Pages cannot make unlinked pages private.
+
+## Test the Backend
+
+After `config.js` has the deployed Apps Script URL, run:
+
+```bash
+node scripts/test-sheets-backend.mjs
+```
+
+The test writes one row named `Codex backend test ...`, then reads the response feed and confirms that row appears in the schedule data. To inspect counts without writing a new row:
+
+```bash
+node scripts/test-sheets-backend.mjs --read-only
+```
