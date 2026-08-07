@@ -14,30 +14,34 @@ Static GitHub Pages scheduling poll for a Twilight Imperium IV game on:
 3. Set the source to the root of the `master` branch.
 4. Save and use the published Pages URL.
 
-## Response Delivery
+## Submission Flow
 
-GitHub Pages only hosts static files, so it cannot store form submissions by itself. By default, the button opens a prefilled GitHub Issue in this repository:
+The public poll submits without opening GitHub. After a valid submission, visitors land on `thanks.html`.
+
+GitHub Pages cannot store submissions by itself. To collect real shared responses, configure the endpoints in `config.js`.
+
+For local-only testing before the backend is ready, temporarily set `localDemoMode` to `true`. Do not use that mode for the invite link, because each visitor's response would stay in that visitor's browser.
+
+## Google Sheets Backend
+
+The repo includes a tiny Google Apps Script backend at `backend/google-apps-script/Code.gs`.
+
+1. Create a Google Sheet for the poll.
+2. Open **Extensions > Apps Script**.
+3. Replace the default script with `backend/google-apps-script/Code.gs`.
+4. Deploy as a web app.
+5. Set access to **Anyone**.
+6. Copy the web app URL.
+7. Paste it into `config.js` for both endpoints:
 
 ```js
-const GITHUB_ISSUE_URL = "https://github.com/Hardywillaredt/Ti-Time/issues/new";
+window.TI_TIME_CONFIG = {
+  submissionEndpoint: "https://script.google.com/macros/s/YOUR_DEPLOYMENT_ID/exec",
+  responsesEndpoint: "https://script.google.com/macros/s/YOUR_DEPLOYMENT_ID/exec",
+  responseFormat: "jsonp",
+  submitMode: "no-cors",
+  localDemoMode: false,
+};
 ```
 
-That works without a backend as long as GitHub Issues are enabled. Responses will be visible wherever repo issues are visible.
-
-The public poll does not show a GitHub-labeled response button. An unlinked organizer page at `responses.html` points to the GitHub Issues response inbox. GitHub Pages does not make unlinked pages private, so keep the repo/settings aligned with the privacy level you need.
-
-To route private form posts through a static-form service, configure this value at the top of `script.js`:
-
-```js
-const FORM_ENDPOINT = "https://formspree.io/f/your-form-id";
-const ORGANIZER_EMAIL = "";
-```
-
-Or use the mailto fallback:
-
-```js
-const FORM_ENDPOINT = "";
-const ORGANIZER_EMAIL = "you@example.com";
-```
-
-If none of those values are set, the page copies a formatted response to the visitor's clipboard.
+The admin schedule overview lives at `responses.html`. It is not linked from the public poll, but GitHub Pages cannot make unlinked pages private.

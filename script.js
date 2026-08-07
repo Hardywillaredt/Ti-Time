@@ -1,19 +1,12 @@
-const FORM_ENDPOINT = "";
-const ORGANIZER_EMAIL = "";
-const GITHUB_ISSUE_URL = "https://github.com/Hardywillaredt/Ti-Time/issues/new";
+const CONFIG = window.TI_TIME_CONFIG || {};
 
 const form = document.querySelector("#availability-form");
 const statusEl = document.querySelector("#form-status");
 const button = document.querySelector("#submit-button");
 const label = document.querySelector("#submit-label");
-const icon = document.querySelector("#submit-icon");
 
-function deliveryMode() {
-  if (FORM_ENDPOINT) return "endpoint";
-  if (ORGANIZER_EMAIL) return "email";
-  if (GITHUB_ISSUE_URL) return "github";
-  return "copy";
-}
+const LOCAL_RESPONSE_KEY = "ti-time-local-responses";
+const LAST_RESPONSE_KEY = "ti-time-last-response";
 
 function setStatus(message, tone = "") {
   statusEl.textContent = message;
@@ -26,122 +19,88 @@ function selectedSlots() {
   );
 }
 
-function responseSummary() {
+function buildResponse() {
   const data = new FormData(form);
-  const slots = selectedSlots();
-
-  return [
-    "TI4 availability poll response",
-    "",
-    `Name: ${data.get("name")}`,
-    "",
-    "Available start times:",
-    ...slots.map((slot) => `- ${slot}`),
-  ].join("\n");
+  return {
+    name: String(data.get("name") || "").trim(),
+    availability: selectedSlots(),
+    submittedAt: new Date().toISOString(),
+  };
 }
 
-async function copyText(text) {
-  if (navigator.clipboard && window.isSecureContext) {
-    await navigator.clipboard.writeText(text);
-    return;
+function saveLocalResponse(response) {
+  const existing = JSON.parse(localStorage.getItem(LOCAL_RESPONSE_KEY) || "[]");
+  existing.push(response);
+  localStorage.setItem(LOCAL_RESPONSE_KEY, JSON.stringify(existing));
+}
+
+async function submitResponse(response) {
+  const endpoint = String(CONFIG.submissionEndpoint || "").trim();
+
+  if (!endpoint) {
+    if (CONFIG.localDemoMode) {
+      saveLocalResponse(response);
+      return;
+    }
+
+    throw new Error("Submission endpoint is not configured yet.");
   }
 
-  const scratch = document.createElement("textarea");
-  scratch.value = text;
-  scratch.setAttribute("readonly", "");
-  scratch.style.position = "fixed";
-  scratch.style.left = "-9999px";
-  document.body.appendChild(scratch);
-  scratch.select();
-  document.execCommand("copy");
-  scratch.remove();
-}
+  const mode = CONFIG.submitMode || "no-cors";
+  const request =
+    mode === "cors"
+      ? {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+          body: JSON.stringify(response),
+        }
+      : {
+          method: "POST",
+          mode: "no-cors",
+          headers: {
+            "Content-Type": "text/plain;charset=utf-8",
+          },
+          body: JSON.stringify(response),
+        };
 
-async function submitToEndpoint() {
-  const payload = new FormData(form);
-  payload.set("availability", selectedSlots().join(", "));
-  payload.set("summary", responseSummary());
-
-  const response = await fetch(FORM_ENDPOINT, {
-    method: "POST",
-    body: payload,
-    headers: { Accept: "application/json" },
-  });
-
-  if (!response.ok) {
-    throw new Error("Submission failed.");
+  const result = await fetch(endpoint, request);
+  if (mode === "cors" && !result.ok) {
+    throw new Error("Submission could not be recorded.");
   }
 }
 
-function openEmail(summary) {
-  const subject = encodeURIComponent("TI4 availability poll response");
-  const body = encodeURIComponent(summary);
-  window.location.href = `mailto:${ORGANIZER_EMAIL}?subject=${subject}&body=${body}`;
-}
-
-function openGitHubIssue(summary) {
-  const data = new FormData(form);
-  const player = data.get("name") || "Player";
-  const title = encodeURIComponent(`TI4 availability: ${player}`);
-  const body = encodeURIComponent(summary);
-  window.location.href = `${GITHUB_ISSUE_URL}?title=${title}&body=${body}`;
-}
-
-function configureButton() {
-  const mode = deliveryMode();
-  if (mode === "endpoint") {
-    label.textContent = "Submit Availability";
-    icon.textContent = ">";
-  } else if (mode === "email") {
-    label.textContent = "Submit Availability";
-    icon.textContent = "@";
-  } else if (mode === "github") {
-    label.textContent = "Submit Availability";
-    icon.textContent = ">";
-  } else {
-    label.textContent = "Copy response";
-    icon.textContent = "#";
-  }
+function goToThanks(response) {
+  sessionStorage.setItem(LAST_RESPONSE_KEY, JSON.stringify(response));
+  const name = encodeURIComponent(response.name);
+  window.location.href = `thanks.html?name=${name}`;
 }
 
 form.addEventListener("submit", async (event) => {
   event.preventDefault();
   setStatus("");
 
-  const slots = selectedSlots();
-  if (slots.length === 0) {
-    setStatus("Pick at least one start time.", "error");
-    return;
-  }
-
   if (!form.reportValidity()) {
     return;
   }
 
-  const mode = deliveryMode();
-  const summary = responseSummary();
+  const response = buildResponse();
+  if (response.availability.length === 0) {
+    setStatus("Pick at least one start time.", "error");
+    return;
+  }
+
   button.disabled = true;
+  label.textContent = "Submitting...";
 
   try {
-    if (mode === "endpoint") {
-      await submitToEndpoint();
-      form.reset();
-      setStatus("Response sent.", "success");
-    } else if (mode === "email") {
-      openEmail(summary);
-      setStatus("Email draft opened.", "success");
-    } else if (mode === "github") {
-      openGitHubIssue(summary);
-      setStatus("Response form opened.", "success");
-    } else {
-      await copyText(summary);
-      setStatus("Response copied.", "success");
-    }
+    await submitResponse(response);
+    goToThanks(response);
   } catch (error) {
-    setStatus(error.message || "Response could not be sent.", "error");
-  } finally {
+    setStatus(error.message || "Response could not be recorded.", "error");
     button.disabled = false;
+    label.textContent = "Submit Availability";
   }
 });
-
-configureButton();

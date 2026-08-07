@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>The Galactic Council Thanks You</title>
+    <link rel="preload" as="image" href="assets/galactic-table.png">
+    <link rel="preload" as="image" href="assets/council-thanks.webp">
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <main class="thanks-shell">
+      <section class="thanks-panel" aria-labelledby="thanks-title">
+        <img
+          class="thanks-art"
+          src="assets/council-thanks.webp"
+          alt="A lion-faced galactic diplomat opening his hands in approval."
+        >
+        <div class="thanks-copy">
+          <p class="kicker">Accession Recorded</p>
+          <h1 id="thanks-title">The Galactic Council thanks you for your accession</h1>
+          <p id="thanks-detail">
+            Your availability has been entered into the council records.
+          </p>
+          <a class="admin-link" href="index.html">Adjust Availability</a>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      const params = new URLSearchParams(window.location.search);
+      const name = params.get("name");
+      if (name) {
+        document.querySelector("#thanks-detail").textContent =
+          `${name}, your availability has been entered into the council records.`;
+      }
+    </script>
+  </body>
+</html>

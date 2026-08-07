@@ -4,35 +4,45 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="robots" content="noindex">
-    <title>TI4 Response Console</title>
+    <title>TI4 Schedule Overview</title>
     <link rel="preload" as="image" href="assets/galactic-table.png">
     <link rel="stylesheet" href="styles.css">
   </head>
   <body>
-    <main class="admin-shell">
-      <section class="admin-panel" aria-labelledby="response-title">
+    <main class="admin-shell schedule-shell">
+      <section class="admin-panel schedule-panel" aria-labelledby="response-title">
         <p class="kicker">Organizer Console</p>
-        <h1 id="response-title">Council Records</h1>
-        <p>
-          This page is not linked from the public poll. Use it to jump straight to
-          the GitHub Issues inbox where submitted availability responses land.
-        </p>
-        <p>
-          Static GitHub Pages cannot make this page private. If response privacy
-          matters, use a private repository or switch `script.js` to a private
-          form endpoint.
+        <h1 id="response-title">Schedule Overview</h1>
+        <p id="response-source" class="source-note">
+          Loading council records...
         </p>
 
+        <div id="slot-overview" class="overview-grid" aria-label="Availability by start time"></div>
+
+        <section class="response-ledger" aria-labelledby="ledger-title">
+          <h2 id="ledger-title">Declarations</h2>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th scope="col">Name</th>
+                  <th scope="col">Available Start Times</th>
+                  <th scope="col">Submitted</th>
+                </tr>
+              </thead>
+              <tbody id="response-table"></tbody>
+            </table>
+          </div>
+        </section>
+
         <div class="admin-actions">
-          <a
-            class="admin-link"
-            href="https://github.com/Hardywillaredt/Ti-Time/issues?q=is%3Aissue%20TI4%20availability"
-          >
-            Open Response Inbox
-          </a>
+          <button id="refresh-responses" class="admin-link" type="button">Refresh Records</button>
           <a class="admin-copy" href="index.html">Back to Poll</a>
         </div>
       </section>
     </main>
+
+    <script src="config.js"></script>
+    <script src="responses.js"></script>
   </body>
 </html>
