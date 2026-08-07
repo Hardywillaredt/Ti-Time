@@ -121,6 +121,29 @@ function summarize(responses) {
   }));
 }
 
+function responseTime(response) {
+  const time = new Date(response.submittedAt).getTime();
+  return Number.isNaN(time) ? 0 : time;
+}
+
+function currentResponses(responses) {
+  const latestByName = new Map();
+
+  for (const response of responses) {
+    const key = response.name.trim().toLocaleLowerCase();
+    const existing = latestByName.get(key);
+
+    if (!existing || responseTime(response) >= responseTime(existing)) {
+      latestByName.set(key, response);
+    }
+  }
+
+  return [...latestByName.values()].sort((a, b) => {
+    const timeDifference = responseTime(b) - responseTime(a);
+    return timeDifference || a.name.localeCompare(b.name);
+  });
+}
+
 async function waitForResponse(endpoint, responseFormat, expectedName, expectedSlot) {
   let responses = [];
 
@@ -153,10 +176,15 @@ async function main() {
   console.log(`Using endpoint: ${maskUrl(submissionEndpoint)}`);
 
   if (readOnly) {
-    const responses = (await loadResponses(responsesEndpoint, config.responseFormat)).map(
+    const allResponses = (await loadResponses(responsesEndpoint, config.responseFormat)).map(
       normalizeResponse,
     );
-    console.log(`Loaded ${responses.length} response${responses.length === 1 ? "" : "s"}.`);
+    const responses = currentResponses(allResponses);
+    console.log(
+      `Loaded ${responses.length} current declaration${
+        responses.length === 1 ? "" : "s"
+      } from ${allResponses.length} total submission${allResponses.length === 1 ? "" : "s"}.`,
+    );
     for (const item of summarize(responses)) {
       console.log(`${item.count} - ${item.slot}`);
     }
@@ -183,8 +211,12 @@ async function main() {
     );
   }
 
+  const current = currentResponses(result.responses);
   console.log(`Submitted and confirmed "${testName}" after ${result.attempt} read attempt(s).`);
-  for (const item of summarize(result.responses)) {
+  console.log(
+    `Current declarations: ${current.length}; total submissions: ${result.responses.length}.`,
+  );
+  for (const item of summarize(current)) {
     console.log(`${item.count} - ${item.slot}`);
   }
 }

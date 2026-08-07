@@ -20,6 +20,8 @@ The public poll submits without opening GitHub. After a valid submission, visito
 
 GitHub Pages cannot store submissions by itself. To collect real shared responses, configure the endpoints in `config.js`.
 
+When a visitor returns from the same browser, the form reloads their last submitted name and start times so they can adjust and submit again. The Google Sheet keeps every submission row, and the admin overview uses the latest submission for each name as the current declaration.
+
 For local-only testing before the backend is ready, temporarily set `localDemoMode` to `true`. Do not use that mode for the invite link, because each visitor's response would stay in that visitor's browser.
 
 ## Google Sheets Backend

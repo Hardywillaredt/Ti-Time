@@ -351,6 +351,10 @@ textarea:focus {
   color: #9ee3c6;
 }
 
+.status[data-tone="info"] {
+  color: var(--teal);
+}
+
 .status[data-tone="error"] {
   color: #ffb4ad;
 }

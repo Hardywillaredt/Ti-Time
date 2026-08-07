@@ -7,6 +7,8 @@ const label = document.querySelector("#submit-label");
 
 const LOCAL_RESPONSE_KEY = "ti-time-local-responses";
 const LAST_RESPONSE_KEY = "ti-time-last-response";
+const CURRENT_RESPONSE_KEY = "ti-time-current-response";
+let idleSubmitLabel = "Submit Availability";
 
 function setStatus(message, tone = "") {
   statusEl.textContent = message;
@@ -32,6 +34,36 @@ function saveLocalResponse(response) {
   const existing = JSON.parse(localStorage.getItem(LOCAL_RESPONSE_KEY) || "[]");
   existing.push(response);
   localStorage.setItem(LOCAL_RESPONSE_KEY, JSON.stringify(existing));
+}
+
+function readStoredResponse() {
+  try {
+    return JSON.parse(localStorage.getItem(CURRENT_RESPONSE_KEY) || "null");
+  } catch {
+    return null;
+  }
+}
+
+function rememberResponse(response) {
+  const serialized = JSON.stringify(response);
+  localStorage.setItem(CURRENT_RESPONSE_KEY, serialized);
+  sessionStorage.setItem(LAST_RESPONSE_KEY, serialized);
+}
+
+function restoreStoredResponse() {
+  const response = readStoredResponse();
+  if (!response || !response.name) return;
+
+  form.elements.name.value = response.name;
+  const availableSlots = new Set(Array.isArray(response.availability) ? response.availability : []);
+
+  for (const input of form.querySelectorAll('input[name="availability"]')) {
+    input.checked = availableSlots.has(input.value);
+  }
+
+  idleSubmitLabel = "Update Availability";
+  label.textContent = idleSubmitLabel;
+  setStatus("Previous declaration loaded.", "info");
 }
 
 async function submitResponse(response) {
@@ -73,7 +105,7 @@ async function submitResponse(response) {
 }
 
 function goToThanks(response) {
-  sessionStorage.setItem(LAST_RESPONSE_KEY, JSON.stringify(response));
+  rememberResponse(response);
   const name = encodeURIComponent(response.name);
   window.location.href = `thanks.html?name=${name}`;
 }
@@ -101,6 +133,8 @@ form.addEventListener("submit", async (event) => {
   } catch (error) {
     setStatus(error.message || "Response could not be recorded.", "error");
     button.disabled = false;
-    label.textContent = "Submit Availability";
+    label.textContent = idleSubmitLabel;
   }
 });
+
+restoreStoredResponse();

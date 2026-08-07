@@ -32,6 +32,29 @@ function localResponses() {
   return JSON.parse(localStorage.getItem(LOCAL_RESPONSE_KEY) || "[]").map(normalizeResponse);
 }
 
+function responseTime(response) {
+  const time = new Date(response.submittedAt).getTime();
+  return Number.isNaN(time) ? 0 : time;
+}
+
+function currentResponses(responses) {
+  const latestByName = new Map();
+
+  for (const response of responses) {
+    const key = response.name.trim().toLocaleLowerCase();
+    const existing = latestByName.get(key);
+
+    if (!existing || responseTime(response) >= responseTime(existing)) {
+      latestByName.set(key, response);
+    }
+  }
+
+  return [...latestByName.values()].sort((a, b) => {
+    const timeDifference = responseTime(b) - responseTime(a);
+    return timeDifference || a.name.localeCompare(b.name);
+  });
+}
+
 function loadJsonp(url) {
   return new Promise((resolve, reject) => {
     const callbackName = `tiTimeResponses${Date.now()}`;
@@ -138,17 +161,23 @@ async function loadResponses() {
 
   try {
     const remote = await remoteResponses();
-    const responses = (remote || localResponses()).map(normalizeResponse);
-    responses.sort((a, b) => String(b.submittedAt).localeCompare(String(a.submittedAt)));
+    const allResponses = (remote || localResponses()).map(normalizeResponse);
+    const responses = currentResponses(allResponses);
 
     renderOverview(responses);
     renderTable(responses);
 
     sourceEl.textContent = remote
-      ? `${responses.length} response${responses.length === 1 ? "" : "s"} loaded from the configured endpoint.`
-      : `${responses.length} local demo response${responses.length === 1 ? "" : "s"} shown. Configure responsesEndpoint for shared admin records.`;
+      ? `${responses.length} current declaration${
+          responses.length === 1 ? "" : "s"
+        } loaded from ${allResponses.length} total submission${
+          allResponses.length === 1 ? "" : "s"
+        }.`
+      : `${responses.length} current local demo declaration${
+          responses.length === 1 ? "" : "s"
+        } shown. Configure responsesEndpoint for shared admin records.`;
   } catch (error) {
-    const responses = localResponses();
+    const responses = currentResponses(localResponses());
     renderOverview(responses);
     renderTable(responses);
     sourceEl.textContent = `${error.message} Showing ${responses.length} local demo response${
