@@ -24,6 +24,8 @@ const GITHUB_ISSUE_URL = "https://github.com/Hardywillaredt/Ti-Time/issues/new";
 
 That works without a backend as long as GitHub Issues are enabled. Responses will be visible wherever repo issues are visible.
 
+The public poll does not show a GitHub-labeled response button. An unlinked organizer page at `responses.html` points to the GitHub Issues response inbox. GitHub Pages does not make unlinked pages private, so keep the repo/settings aligned with the privacy level you need.
+
 To route private form posts through a static-form service, configure this value at the top of `script.js`:
 
 ```js

@@ -115,8 +115,21 @@ h1 span {
 }
 
 .form-heading h2 {
-  font-size: 1.72rem;
-  line-height: 1.12;
+  display: grid;
+  gap: 7px;
+  line-height: 1.08;
+}
+
+.council-call {
+  color: var(--red);
+  font-size: 2.08rem;
+  font-weight: 950;
+}
+
+.declaration-line {
+  color: var(--ink);
+  font-size: 1.45rem;
+  font-weight: 850;
 }
 
 .field-grid {
@@ -354,11 +367,84 @@ textarea:focus {
   }
 
   .form-heading h2 {
-    font-size: 1.65rem;
+    gap: 6px;
+  }
+
+  .council-call {
+    font-size: 1.82rem;
+  }
+
+  .declaration-line {
+    font-size: 1.28rem;
   }
 
   .field-grid,
   .slot-grid {
     grid-template-columns: 1fr;
   }
+}
+
+.admin-shell {
+  display: grid;
+  place-items: center;
+  width: min(100% - 32px, 760px);
+  min-height: 100vh;
+  margin: 0 auto;
+  padding: 32px 0;
+}
+
+.admin-panel {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background:
+    linear-gradient(160deg, rgba(35, 45, 55, 0.55), rgba(10, 13, 18, 0.12)),
+    var(--panel);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(18px);
+  padding: 34px;
+}
+
+.admin-panel h1 {
+  max-width: 100%;
+  color: var(--gold);
+  font-family: inherit;
+  font-size: 2.45rem;
+  line-height: 1.05;
+}
+
+.admin-panel p {
+  color: var(--muted);
+  font-size: 1rem;
+  line-height: 1.55;
+}
+
+.admin-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.admin-link,
+.admin-copy {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 46px;
+  border-radius: 6px;
+  padding: 0 18px;
+  font-weight: 900;
+  text-decoration: none;
+}
+
+.admin-link {
+  background: linear-gradient(135deg, var(--gold), #d99440);
+  color: #11100d;
+}
+
+.admin-copy {
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(4, 8, 13, 0.78);
+  color: var(--ink);
 }

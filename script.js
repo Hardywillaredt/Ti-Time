@@ -91,13 +91,13 @@ function openGitHubIssue(summary) {
 function configureButton() {
   const mode = deliveryMode();
   if (mode === "endpoint") {
-    label.textContent = "Send response";
+    label.textContent = "Submit Availability";
     icon.textContent = ">";
   } else if (mode === "email") {
-    label.textContent = "Open email response";
+    label.textContent = "Submit Availability";
     icon.textContent = "@";
   } else if (mode === "github") {
-    label.textContent = "Open GitHub response";
+    label.textContent = "Submit Availability";
     icon.textContent = ">";
   } else {
     label.textContent = "Copy response";
@@ -133,7 +133,7 @@ form.addEventListener("submit", async (event) => {
       setStatus("Email draft opened.", "success");
     } else if (mode === "github") {
       openGitHubIssue(summary);
-      setStatus("GitHub response opened.", "success");
+      setStatus("Response form opened.", "success");
     } else {
       await copyText(summary);
       setStatus("Response copied.", "success");
